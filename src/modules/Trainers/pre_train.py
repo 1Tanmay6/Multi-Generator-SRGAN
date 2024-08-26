@@ -1,4 +1,4 @@
-import sys
+import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -9,9 +9,10 @@ from ..Generator.generator import Generator
 
 
 class PreTrainer:
-    def __init__(self, generator: Generator):
+    def __init__(self, generator: Generator, model_name='generator'):
         pretrain_config = get_config_files(key='pretrain')
         self.losses = []
+        self.model_name = model_name
         self.criteria = nn.MSELoss()
         self.generator = generator.cuda()
         self.lr = float(pretrain_config['lr'])
@@ -59,11 +60,20 @@ class PreTrainer:
     def get_criteria(self):
         return self.criteria
 
+    def save_model(self, path):
+        torch.save(self.generator.state_dict(), path)
+
+    def save_model_script(self, path):
+        model_scripted = torch.jit.script(self.generator)
+        model_scripted.save(os.path.join(path, f'{self.model_name}.pt'))
+
 
 if __name__ == '__main__':
     dataset = CustomDatasetGenerator()
     train_loader, _ = dataset.dataset_generator()
     g = Generator()
     pre_trainer = PreTrainer(g)
-    sys.stdout.write(pre_trainer.train(train_loader))
-    torch.save(g.state_dict(), 'generator.pth')
+    pre_trainer.train(train_loader)
+    pre_trainer.save_model_script('src')
+    # sys.stdout.write(pre_trainer.train(train_loader))
+    # torch.save(g.state_dict(), 'generator.pth')

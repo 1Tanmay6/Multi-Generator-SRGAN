@@ -11,7 +11,7 @@ def get_config_files(key: str):
     return config[key]
 
 
-def print_progress(epoch, num_epochs, batch, num_batches, loss, bar_length=30):
+def print_progress(epoch, num_epochs, batch, num_batches, loss, bar_length=30, adversarial_loss=False):
     progress = (batch + 1) / num_batches
     progress_bar = int(progress * bar_length)
 
@@ -20,8 +20,12 @@ def print_progress(epoch, num_epochs, batch, num_batches, loss, bar_length=30):
     sys.stdout.write(f"{Fore.YELLOW}{
                      '█' * progress_bar}{Fore.WHITE}{'-' * (bar_length - progress_bar)}")
     sys.stdout.write(f"| {Fore.GREEN}{int(progress * 100)}% {Style.RESET_ALL}")
-    sys.stdout.write(
-        f" [Batch {batch + 1}/{num_batches}] [Loss: {Fore.RED}{loss:.4f}{Style.RESET_ALL}]\r")
+    if adversarial_loss:
+        sys.stdout.write(
+            f" [Batch {batch + 1}/{num_batches}] [D loss: {Fore.RED}{loss[0]:.4f}{Style.RESET_ALL}] [G loss: {Fore.BLUE}{loss[1]:.4f}{Style.RESET_ALL}]\r")
+    else:
+        sys.stdout.write(
+            f" [Batch {batch + 1}/{num_batches}] [Loss: {Fore.RED}{loss:.4f}{Style.RESET_ALL}]\r")
     sys.stdout.flush()
 
 
