@@ -8,14 +8,15 @@ from torchvision.utils import save_image
 
 from typing import Union
 
+
 class Inferencer():
     def __init__(self, model_path: str) -> None:
         self.model = None
         self.model_path = model_path
         self.cur_image = None
-    
+
     def __call__(self, image_path: str) -> torch.Tensor:
-       return self.infer(image_path)
+        return self.infer(image_path)
 
     def __del__(self) -> None:
         if self.model is not None:
@@ -27,7 +28,7 @@ class Inferencer():
     def __str__(self) -> str:
         model_name = self.model_path.split('/')[-1]
         return f'''Inferencer(\nMODEL_NAME: {model_name}\nMODEL_PATH: {self.model_path}\n)'''
-    
+
     def get_model(self) -> Union[str, torch.jit._script.RecursiveScriptModule]:
         if self.model is not None:
             return self.model
@@ -60,7 +61,7 @@ class Inferencer():
             transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
         ])
         return preprocess(image).unsqueeze(0).cuda()
-    
+
     def save(self, dir_path: str, image_name: str) -> Union[str, None]:
         if not os.path.exists(dir_path):
             os.makedirs(dir_path, exist_ok=True)
@@ -70,4 +71,3 @@ class Inferencer():
             path = os.path.join(dir_path, image_name)
             save_image(self.cur_image, path, normalize=True)
             print(f'Image saved at location: {path}')
-

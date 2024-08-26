@@ -22,7 +22,7 @@ class EnsembleInferencer(Inferencer):
     def __str__(self) -> str:
         model_names = [path.split('/')[-1] for path in self.model_paths]
         return f'''EnsembleInferencer(\nMODEL_NAMES: {model_names}\nMODEL_PATHS: {self.model_paths}\n)'''
-    
+
     def __del__(self) -> None:
         for model in self.models:
             if model is not None:
@@ -43,7 +43,8 @@ class EnsembleInferencer(Inferencer):
             with torch.no_grad():
                 output = model(image)
             outputs.append(output)
-        output = torch.mean(torch.stack(outputs), dim=0) # Chnage this to the desired ensemble method (Currently Mean)
+        # Chnage this to the desired ensemble method (Currently Mean)
+        output = torch.mean(torch.stack(outputs), dim=0)
         print('Response Time:', time.time() - st)
         self.cur_image = output.data
         return output.data
