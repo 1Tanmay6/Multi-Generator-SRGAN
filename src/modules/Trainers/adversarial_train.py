@@ -5,7 +5,7 @@ import torch.optim as optim
 from torchvision.utils import save_image
 
 from ..Utils import get_config_files, print_progress
-from ..Data.custom_dataset_generator import CustomDatasetGenerator
+from ..Data.custom_dataset_generator import DatasetModifier
 from ..LossUtils import VGGFeatureExtractor
 from ..Generator.generator import Generator
 from ..Discriminator.discriminator import Discriminator
@@ -55,7 +55,7 @@ class AdversarialTrainer:
     def __repr__(self) -> str:
         return "AdversarialTrainer(generator=Generator(), discriminator=Discriminator())"
 
-    def train(self, train_loader: CustomDatasetGenerator):
+    def train(self, train_loader: DatasetModifier):
         for epoch in range(self.num_epochs):
             for i, (imgs_lr, imgs_hr) in enumerate(train_loader):
                 try:
@@ -146,8 +146,8 @@ class AdversarialTrainer:
 
 
 if __name__ == '__main__':
-    dataset = CustomDatasetGenerator()
-    train_loader, _ = dataset.dataset_generator()
+    dataset = DatasetModifier()
+    train_loader, _ = dataset.get_loaders()
     g = Generator()
     d = Discriminator()
     adv = AdversarialTrainer(g, d)

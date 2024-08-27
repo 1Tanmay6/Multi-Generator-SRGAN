@@ -5,7 +5,7 @@ from torchvision.utils import save_image
 import torch.optim as optim
 
 from ..Utils import get_config_files, print_progress
-from ..Data.custom_dataset_generator import CustomDatasetGenerator
+from ..Data.custom_dataset_generator import DatasetModifier
 from ..Generator.generator import Generator
 
 
@@ -78,8 +78,8 @@ class PreTrainer:
 
 
 if __name__ == '__main__':
-    dataset = CustomDatasetGenerator()
-    train_loader, _ = dataset.dataset_generator()
+    dataset = DatasetModifier()
+    train_loader, _ = dataset.get_loaders()
     g = Generator()
     pre_trainer = PreTrainer(g)
     pre_trainer.train(train_loader)
