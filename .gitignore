@@ -1,3 +1,5 @@
 dataset
-images
+images/*.png
+images/train
+images/pre_train
 .venv/*
