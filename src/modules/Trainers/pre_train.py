@@ -1,6 +1,7 @@
 import os
 import torch
 import torch.nn as nn
+from torchvision.utils import save_image
 import torch.optim as optim
 
 from ..Utils import get_config_files, print_progress
@@ -11,6 +12,10 @@ from ..Generator.generator import Generator
 class PreTrainer:
     def __init__(self, generator: Generator, model_name='generator'):
         pretrain_config = get_config_files(key='pretrain')
+        self.save_images = bool(pretrain_config['save_images'])
+        if self.save_images:
+            self.image_save_path = pretrain_config['image_save_path']
+            os.makedirs(self.image_save_path, exist_ok=True)
         self.losses = []
         self.model_name = model_name
         self.criteria = nn.MSELoss()
@@ -47,6 +52,10 @@ class PreTrainer:
                 self.optimizer.step()
                 print_progress(epoch+1, self.epochs, i,
                                len(data_loader), loss.item())
+
+            if self.save_images:
+                save_image(gen_hr.data, f'''{
+                    self.image_save_path}/generator_{epoch}.png''')
 
     def get_model(self):
         return self.generator

@@ -116,9 +116,9 @@ class AdversarialTrainer:
                     break
             if self.save_images:
                 save_image(
-                    gen_hr.data, f'{self.image_save_path}/gen_hr_epoch_{epoch}.png', normalize=True)
+                    gen_hr.data, f'{self.image_save_path}/gen_hr_epoch_{epoch+1}.png', normalize=True)
                 save_image(
-                    imgs_lr, f'{self.image_save_path}/gen_lr_epoch_{epoch}.png', normalize=True)
+                    imgs_lr, f'{self.image_save_path}/gen_lr_epoch_{epoch+1}.png', normalize=True)
 
     def get_models(self):
         return self.generator, self.discriminator
