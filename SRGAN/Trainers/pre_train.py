@@ -10,7 +10,7 @@ from ..Generator.generator import Generator
 
 
 class PreTrainer:
-    def __init__(self, generator: Generator, model_name='generator'):
+    def __init__(self, generator: Generator, model_name='p_generator'):
         pretrain_config = get_config_files(key='pretrain')
         self.save_images = bool(pretrain_config['save_images'])
         if self.save_images:
@@ -38,7 +38,7 @@ class PreTrainer:
     def train(self, data_loader):
         self.generator.train()
         for epoch in range(self.epochs):
-            for i, (imgs_lr, imgs_hr) in enumerate(train_loader):
+            for i, (imgs_lr, imgs_hr) in enumerate(data_loader):
                 imgs_lr = imgs_lr.cuda()
                 imgs_hr = imgs_hr.cuda()
 
