@@ -1,5 +1,9 @@
+.venv/*
+archive
 dataset
 images/*.png
 images/train
 images/pre_train
-.venv/*
+*/*/*/__pycache__/*
+*/*/__pycache__/*
+*/__pycache__/*

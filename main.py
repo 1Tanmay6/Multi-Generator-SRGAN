@@ -1,11 +1,12 @@
 import os
+import time
 import argparse
 
-from SRGAN.Data import DatasetModifier
-from SRGAN.Generator import Generator
-from SRGAN.Discriminator import Discriminator
-from SRGAN.LossUtils import VGGFeatureExtractor
-from SRGAN.Trainers import PreTrainer, AdversarialTrainer
+from MG_SRGAN.Data import DatasetModifier
+from MG_SRGAN.Generator import Generator
+from MG_SRGAN.Discriminator import Discriminator
+from MG_SRGAN.LossUtils import VGGFeatureExtractor
+from MG_SRGAN.Trainers import PreTrainer, AdversarialTrainer
 
 
 def load_dataset():
@@ -62,18 +63,25 @@ def main():
     train_loader, _ = load_dataset()
 
     if args.mode == 'pretrain':
+        st = time.time()
         pre_trainer = pre_train(generator, train_loader)
         export_model(pre_trainer, args.export)
+        print(f"Time taken for pre-training: {time.time() - st}")
     elif args.mode == 'advtrain':
+        st = time.time()
         adv_trainer = adversarial_train(generator, discriminator,
                                         train_loader, vgg_feature_extractor)
         export_model(adv_trainer, args.export, key='advtrain')
+        print(f"Time taken for adversarial training: {time.time() - st}")
     elif args.mode == 'both':
+        st = time.time()
         pre_trainer = pre_train(generator, train_loader)
         export_model(pre_trainer, args.export)
+        print(f"Time taken for pre-training: {time.time() - st}")
         adv_trainer = adversarial_train(generator, discriminator,
                                         train_loader, vgg_feature_extractor)
         export_model(adv_trainer, args.export, key='advtrain')
+        print(f"Time taken for adversarial training: {time.time() - st}")
     else:
         raise ValueError(
             "Invalid mode. Choose from 'pretrain', 'advtrain', or 'both'")

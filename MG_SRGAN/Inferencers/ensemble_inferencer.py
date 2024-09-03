@@ -3,7 +3,6 @@ import torch
 import time
 from PIL import Image
 from torchvision.utils import save_image
-
 from typing import Union
 
 from .inferencer import Inferencer

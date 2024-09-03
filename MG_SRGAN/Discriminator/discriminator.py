@@ -1,6 +1,7 @@
 import torch.nn as nn
 from ..Utils import get_config_files
 
+
 class Discriminator(nn.Module):
     def __init__(self):
         super(Discriminator, self).__init__()

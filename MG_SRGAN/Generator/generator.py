@@ -4,6 +4,7 @@ from .residual_block import ResidualBlock
 import torch.nn as nn
 from ..Utils import get_config_files
 
+
 class Generator(nn.Module):
     def __init__(self):
         super(Generator, self).__init__()

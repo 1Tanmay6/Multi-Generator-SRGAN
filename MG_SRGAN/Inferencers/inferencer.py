@@ -5,11 +5,10 @@ from PIL import Image
 import PIL.PngImagePlugin
 from torchvision import transforms
 from torchvision.utils import save_image
-
 from typing import Union
 
 
-class Inferencer():
+class Inferencer:
     def __init__(self, model_path: str) -> None:
         self.model = None
         self.model_path = model_path
