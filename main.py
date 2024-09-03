@@ -1,4 +1,6 @@
+import os
 import argparse
+
 from SRGAN.Data import DatasetModifier
 from SRGAN.Generator import Generator
 from SRGAN.Discriminator import Discriminator
@@ -43,6 +45,8 @@ def export_model(trainer, path, key='pretrain'):
 
 
 def main():
+    os.makedirs('images/pre_train', exist_ok=True)
+    os.makedirs('images/train', exist_ok=True)
     parser = argparse.ArgumentParser(description="SRGAN Training Script")
     parser.add_argument('--export', type=str,
                         help='Path to export the trained model', required=True)
